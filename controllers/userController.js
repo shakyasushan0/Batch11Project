@@ -1,4 +1,5 @@
 import User from "../models/users.js";
+import createToken from "../utils/generateToken.js";
 
 const signup = async (req, res) => {
   const { fullname, email, password, isAdmin } = req.body;
@@ -27,7 +28,8 @@ const login = async (req, res) => {
   const user = await User.findOne({ email });
   if (!user) return res.status(404).send({ error: "User not found!" });
 
-  if (user.password == password) {
+  if (await user.matchPassword(password)) {
+    createToken(res, user._id);
     res.send({
       message: "Login Success!",
       user: {
