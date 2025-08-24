@@ -2,12 +2,14 @@ import express from "express";
 
 // Router import
 import userRouter from "./routers/userRouter.js";
+import productRouter from "./routers/productRouter.js";
 
 const app = express();
 
 // middleware
 app.use(express.json());
 
-app.use("/user", userRouter);
+app.use("/api/user", userRouter);
+app.use("/api/products", productRouter);
 
 export default app;
