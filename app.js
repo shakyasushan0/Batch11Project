@@ -3,7 +3,9 @@ import cookieParser from "cookie-parser";
 
 import errorHandler from "./middlewares/errorHandler.js";
 import logger from "./middlewares/logger.js";
+// import dotenv from 'dotenv'
 
+// dotenv.config()
 // Router import
 import userRouter from "./routers/userRouter.js";
 import productRouter from "./routers/productRouter.js";

@@ -43,4 +43,13 @@ const login = async (req, res) => {
   }
 };
 
-export { signup, login };
+const logout = async (req, res) => {
+  if (req.user) {
+    res.clearCookie("jwt");
+    res.send({ message: "Logout success!" });
+  } else {
+    res.status(400).send({ error: "You are not loggedin!" });
+  }
+};
+
+export { signup, login, logout };
