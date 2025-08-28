@@ -9,6 +9,7 @@ import logger from "./middlewares/logger.js";
 // Router import
 import userRouter from "./routers/userRouter.js";
 import productRouter from "./routers/productRouter.js";
+import orderRouter from "./routers/orderRouter.js";
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(logger);
 
 app.use("/api/user", userRouter);
 app.use("/api/products", productRouter);
+app.use("/api/orders", orderRouter);
 
 app.use(errorHandler);
 
