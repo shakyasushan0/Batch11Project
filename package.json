@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "nodemon --env-file=.env index.js"
+    "server": "nodemon --env-file=.env index.js",
+    "data:destroy": "node --env-file=.env seeder.js -d",
+    "data:load": "node --env-file=.env seeder.js"
   },
   "keywords": [],
   "author": "",

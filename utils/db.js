@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-const mongodbURI = "mongodb://localhost:27017/Batch11";
+const mongodbURI = process.env.MONGODB_URI;
 
 async function connectDB() {
   try {

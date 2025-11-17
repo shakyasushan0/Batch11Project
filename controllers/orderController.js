@@ -36,6 +36,48 @@ const getOrders = async (req, res) => {
   res.send(orders);
 };
 
-const getMyOrders = async (req, res) => {};
+const getMyOrders = async (req, res) => {
+  console.log(req.user._id);
+  const myOrders = await Order.find({ user: req.user._id });
+  res.send(myOrders);
+};
 
-export { addOrder, getOrders };
+const getOrderById = async (req, res) => {
+  const order = await Order.findById(req.params.id);
+  res.send(order);
+};
+
+const payOrder = async (req, res) => {
+  const id = req.params.id;
+  const order = await Order.findById(id);
+  if (!order) return res.status(404).send({ error: "Order not found" });
+  order.isPaid = true;
+  order.paidAt = Date.now();
+  order.paymentMethod = req.body.paymentMethod;
+  await order.save();
+  // await Order.findByIdAndUpdate(id, {isPaid: true, paidAt= Date.now(), paymentMethod: order.paymentMethod})
+  res.send({ message: "Order paid successfully!!!" });
+};
+
+const deliverOrder = async (req, res) => {
+  const id = req.params.id;
+  const order = await Order.findById(id);
+  if (!order) return res.status.send({ error: "Order not found!!!" });
+  if (order.isPaid) {
+    order.isDelivered = true;
+    order.deliveredAt = Date.now();
+    await order.save();
+    res.send({ message: "Order delviered!!!" });
+  } else {
+    res.status(400).send({ error: "Order not paid yet!" });
+  }
+};
+
+export {
+  addOrder,
+  getOrders,
+  getMyOrders,
+  getOrderById,
+  payOrder,
+  deliverOrder,
+};
