@@ -7,6 +7,7 @@ import App from "./App.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import CartPage from "./pages/CartPage.jsx";
 import SigninPage from "./pages/SigninPage.jsx";
+import ProductPage from "./pages/ProductPage.jsx";
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
@@ -15,6 +16,7 @@ createRoot(document.getElementById("root")).render(
         <Route path="" element={<HomePage />} />
         <Route path="cart" element={<CartPage />} />
         <Route path="signin" element={<SigninPage />} />
+        <Route path="product/:id" element={<ProductPage />} />
       </Route>
     </Routes>
   </BrowserRouter>
