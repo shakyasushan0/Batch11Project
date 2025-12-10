@@ -2,27 +2,17 @@ import { useEffect, useState } from "react";
 import { Container, Row, Col, Spinner } from "react-bootstrap";
 import Product from "../components/Product";
 import Message from "../components/Message";
+import { useGetProductsQuery } from "../slices/productApiSlice";
 
 function HomePage() {
-  const [products, setProducts] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [err, setErr] = useState(null);
-  useEffect(() => {
-    fetch("/api/products")
-      .then((resp) => resp.json())
-      .then((data) => {
-        setProducts(data);
-        setIsLoading(false);
-      })
-      .catch((err) => setErr(err.message));
-  }, []);
+  const { data: products, isLoading, error } = useGetProductsQuery();
   return (
     <Container>
       <h1>Latest Products</h1>
       {isLoading ? (
         <Spinner />
-      ) : err ? (
-        <Message>{err}</Message>
+      ) : error ? (
+        <Message>{error?.data?.message}</Message>
       ) : (
         <Row>
           {products.map((product) => (

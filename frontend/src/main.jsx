@@ -8,16 +8,20 @@ import HomePage from "./pages/HomePage.jsx";
 import CartPage from "./pages/CartPage.jsx";
 import SigninPage from "./pages/SigninPage.jsx";
 import ProductPage from "./pages/ProductPage.jsx";
+import { Provider } from "react-redux";
+import { store } from "./store.js";
 
 createRoot(document.getElementById("root")).render(
-  <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<App />}>
-        <Route path="" element={<HomePage />} />
-        <Route path="cart" element={<CartPage />} />
-        <Route path="signin" element={<SigninPage />} />
-        <Route path="product/:id" element={<ProductPage />} />
-      </Route>
-    </Routes>
-  </BrowserRouter>
+  <Provider store={store}>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<App />}>
+          <Route path="" element={<HomePage />} />
+          <Route path="cart" element={<CartPage />} />
+          <Route path="signin" element={<SigninPage />} />
+          <Route path="product/:id" element={<ProductPage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  </Provider>
 );
