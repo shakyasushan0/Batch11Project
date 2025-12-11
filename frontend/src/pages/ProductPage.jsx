@@ -1,5 +1,9 @@
-import { Link, useParams } from "react-router";
+import { Link, useParams, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
+import { Form } from "react-bootstrap";
+import { addToCart } from "../slices/cartSlice";
+import { useDispatch } from "react-redux";
+
 import {
   Row,
   Col,
@@ -15,8 +19,16 @@ import Loader from "../components/Loader";
 import Message from "../components/Message";
 
 function ProductPage() {
+  const [qty, setQty] = useState(1);
   const { id } = useParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { data: product, isLoading, error } = useGetProductByIdQuery(id);
+
+  const addToCartHandler = () => {
+    dispatch(addToCart({ ...product, qty }));
+    navigate("/cart");
+  };
   return (
     <Container>
       {isLoading ? (
@@ -70,8 +82,34 @@ function ProductPage() {
                       </Col>
                     </Row>
                   </ListGroup.Item>
+                  {product.countInStock > 0 && (
+                    <ListGroup.Item>
+                      <Row>
+                        <Col>Qty:</Col>
+                        <Col>
+                          <Form.Control
+                            as="select"
+                            value={qty}
+                            onChange={(e) => setQty(Number(e.target.value))}
+                          >
+                            {[...Array(product.countInStock).keys()].map(
+                              (x) => (
+                                <option key={x} value={x + 1}>
+                                  {x + 1}
+                                </option>
+                              )
+                            )}
+                          </Form.Control>
+                        </Col>
+                      </Row>
+                    </ListGroup.Item>
+                  )}
                   <ListGroup.Item>
-                    <Button variant="dark" disabled={product.countInStock == 0}>
+                    <Button
+                      variant="dark"
+                      disabled={product.countInStock == 0}
+                      onClick={addToCartHandler}
+                    >
                       Add to Cart
                     </Button>
                   </ListGroup.Item>
