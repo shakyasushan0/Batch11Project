@@ -86,7 +86,12 @@ function CartPage() {
                 <strong>${itemPrice}</strong>
               </ListGroup.Item>
               <ListGroup.Item>
-                <Button variant="dark" disabled={cartItems.length === 0}>
+                <Button
+                  variant="dark"
+                  disabled={cartItems.length === 0}
+                  as={Link}
+                  to="/signin?redirect=/shipping"
+                >
                   Proceed to Checkout
                 </Button>
               </ListGroup.Item>
