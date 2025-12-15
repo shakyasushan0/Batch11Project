@@ -26,8 +26,8 @@ const orderSchema = new mongoose.Schema(
     shippingAddress: {
       city: { type: String, required: true },
       address: { type: String, required: true },
-      country: { type: String, required: true },
-      postalCode: { type: String, required: true },
+      province: { type: String, required: true },
+      district: { type: String, required: true },
     },
     isPaid: {
       type: Boolean,
