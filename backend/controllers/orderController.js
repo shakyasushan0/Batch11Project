@@ -2,16 +2,18 @@ import Order from "../models/orders.js";
 import Product from "../models/products.js";
 
 const addOrder = async (req, res) => {
-  const { orderItems, shippingAddress, shippingCharge } = req.body;
+  const { orderItems, shippingAddress, shippingCharge, paymentMethod } = req.body;
   const orderItemsFromDb = await Product.find({
-    _id: { $in: orderItems.map((item) => item.productId) },
+    _id: { $in: orderItems.map((item) => item._id) },
   });
 
   const newOrderItems = orderItems.map((item) => {
-    const actualItem = orderItemsFromDb.find((i) => i._id == item.productId);
+    const actualItem = orderItemsFromDb.find((i) => i._id == item._id);
     return {
       ...item,
       price: actualItem.price,
+      _id: null,
+      productId: actualItem._id,
     };
   });
 
@@ -26,6 +28,7 @@ const addOrder = async (req, res) => {
     shippingCharge,
     itemPrice,
     totalPrice,
+    paymentMethod
     user: req.user._id,
   });
   res.send({ message: "Order placed successfully", orderId: order._id });
