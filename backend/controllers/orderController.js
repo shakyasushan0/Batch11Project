@@ -46,7 +46,10 @@ const getMyOrders = async (req, res) => {
 };
 
 const getOrderById = async (req, res) => {
-  const order = await Order.findById(req.params.id);
+  const order = await Order.findById(req.params.id).populate(
+    "user",
+    "fullname email"
+  );
   res.send(order);
 };
 
