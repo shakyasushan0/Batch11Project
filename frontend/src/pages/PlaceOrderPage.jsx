@@ -1,11 +1,11 @@
 import { Row, Col, Button, ListGroup, Image, Card } from "react-bootstrap";
 import CheckoutStep from "../components/CheckoutStep";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Message from "../components/Message";
 import { Link } from "react-router";
 import { usePlaceOrderMutation } from "../slices/orderApiSlice";
 import { useNavigate } from "react-router";
-import {toast} from 'react-toastify';
+import { toast } from "react-toastify";
 import { clearCart } from "../slices/cartSlice";
 
 function PlaceOrderPage() {
@@ -18,28 +18,26 @@ function PlaceOrderPage() {
     totalPrice,
   } = useSelector((state) => state.cart);
 
-   const navigate = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [placeOrder, {isLoading}] = usePlaceOrderMutation();
+  const [placeOrder, { isLoading }] = usePlaceOrderMutation();
 
   const addOrderHandler = async () => {
-  try{
-    const res = await placeOrder({
-      orderItems: cartItems,
-      shippingAddress,
-      shippingCharge,
-      paymentMethod
-    }).unwrap()
-    toast.success(res.message)
-    dispatch(clearCart())
-    navigate("/order/"+res.orderId)
-
-  }
-  catch(err){
-    toast.error(err?.data?.error)
-  }
-}
+    try {
+      const res = await placeOrder({
+        orderItems: cartItems,
+        shippingAddress,
+        shippingCharge,
+        paymentMethod,
+      }).unwrap();
+      toast.success(res.message);
+      dispatch(clearCart());
+      navigate("/order/" + res.orderId);
+    } catch (err) {
+      toast.error(err?.data?.error);
+    }
+  };
   return (
     <>
       <CheckoutStep step1 step2 step3 step4 />
@@ -110,7 +108,11 @@ function PlaceOrderPage() {
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
-                <Button className="btn-block" variant="dark" onClick={addOrderHandler}>
+                <Button
+                  className="btn-block"
+                  variant="dark"
+                  onClick={addOrderHandler}
+                >
                   Place Order
                 </Button>
               </ListGroup.Item>

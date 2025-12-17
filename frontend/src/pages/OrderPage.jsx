@@ -1,5 +1,9 @@
 import { useParams } from "react-router";
-import { useGetOrderDetailsQuery } from "../slices/orderApiSlice";
+import {
+  // useGetEsewaFormDataQuery,
+  useGetOrderDetailsQuery,
+  useGetEsewaQuery,
+} from "../slices/orderApiSlice.js";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { Card, Col, Image, ListGroup, Row, Button } from "react-bootstrap";
@@ -8,7 +12,26 @@ import { Link } from "react-router";
 function OrderPage() {
   const { id: orderId } = useParams();
   const { data: order, isLoading, error } = useGetOrderDetailsQuery(orderId);
-  console.log(order);
+  const { data: esewaFormData } = useGetEsewaQuery(orderId);
+
+  const handleEsewaPayment = () => {
+    const form = document.createElement("form");
+    const path = "https://rc-epay.esewa.com.np/api/epay/main/v2/form";
+    form.setAttribute("action", path);
+    form.setAttribute("method", "POST");
+    for (let key in esewaFormData) {
+      const input = document.createElement("input");
+      input.setAttribute("type", "hidden");
+      input.setAttribute("name", key);
+      input.setAttribute("id", key);
+      input.setAttribute("value", esewaFormData[key]);
+      form.appendChild(input);
+    }
+    document.body.appendChild(form);
+    console.log(form);
+    form.submit();
+  };
+
   return isLoading ? (
     <Loader />
   ) : error ? (
@@ -35,7 +58,9 @@ function OrderPage() {
                 {order.shippingAddress.province}
               </p>
               {order.isDelivered ? (
-                <Message>Delivered on {order.deliveredAt}</Message>
+                <Message variant="success">
+                  Delivered on {order.deliveredAt}
+                </Message>
               ) : (
                 <Message>Not Delivered</Message>
               )}
@@ -46,7 +71,7 @@ function OrderPage() {
                 <strong>Method: </strong> {order.paymentMethod}
               </p>
               {order.isPaid ? (
-                <Message>Paid on {order.paidAt}</Message>
+                <Message variant="success">Paid on {order.paidAt}</Message>
               ) : (
                 <Message>Not Paid</Message>
               )}
@@ -101,7 +126,11 @@ function OrderPage() {
               </ListGroup.Item>
               <ListGroup.Item>
                 {!order.isPaid && order.paymentMethod == "esewa" && (
-                  <Button variant="dark" className="btn-block">
+                  <Button
+                    variant="dark"
+                    className="btn-block"
+                    onClick={handleEsewaPayment}
+                  >
                     Pay via Esewa
                   </Button>
                 )}
