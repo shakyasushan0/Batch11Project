@@ -15,6 +15,7 @@ import PaymentPage from "./pages/PaymentPage.jsx";
 import PrivatePage from "./pages/PrivatePage.jsx";
 import PlaceOrderPage from "./pages/PlaceOrderPage.jsx";
 import OrderPage from "./pages/OrderPage.jsx";
+import ProfilePage from "./pages/ProfilePage.jsx";
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
@@ -29,7 +30,8 @@ createRoot(document.getElementById("root")).render(
             <Route path="shipping" element={<ShippingPage />} />
             <Route path="payment" element={<PaymentPage />} />
             <Route path="place-order" element={<PlaceOrderPage />} />
-            <Route path="order/:id" element={<OrderPage/>}/>
+            <Route path="profile" element={<ProfilePage />} />
+            <Route path="order/:id" element={<OrderPage />} />
           </Route>
         </Route>
       </Routes>
