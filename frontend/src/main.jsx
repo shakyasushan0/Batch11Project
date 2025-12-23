@@ -16,6 +16,9 @@ import PrivatePage from "./pages/PrivatePage.jsx";
 import PlaceOrderPage from "./pages/PlaceOrderPage.jsx";
 import OrderPage from "./pages/OrderPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
+import AdminRoute from "./components/AdminRoute.jsx";
+import OrderListPage from "./pages/admin/OrderListPage.jsx";
+import ProductListPage from "./pages/admin/ProductListPage.jsx";
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
@@ -32,6 +35,10 @@ createRoot(document.getElementById("root")).render(
             <Route path="place-order" element={<PlaceOrderPage />} />
             <Route path="profile" element={<ProfilePage />} />
             <Route path="order/:id" element={<OrderPage />} />
+          </Route>
+          <Route path="" element={<AdminRoute />}>
+            <Route path="admin/orders" element={<OrderListPage />} />
+            <Route path="admin/products" element={<ProductListPage />} />
           </Route>
         </Route>
       </Routes>

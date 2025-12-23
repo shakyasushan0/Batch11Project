@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 function PrivatePage() {
   const { userInfo } = useSelector((state) => state.auth);
 
-  return userInfo ? <Outlet /> : <Navigate to="/signin" />;
+  return userInfo ? <Outlet /> : <Navigate to="/signin" replace />;
 }
 
 export default PrivatePage;

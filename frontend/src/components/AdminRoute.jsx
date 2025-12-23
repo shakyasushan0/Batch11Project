@@ -1,16 +1,13 @@
-import React from "react";
-import { useState } from "react";
+import { Outlet, Navigate } from "react-router";
+import { useSelector } from "react-redux";
 
-function Admin() {
-  const [abc, setAbc] = useState("");
-  setAbc("hello");
-  return <h1>Hello</h1>;
-}
+function AdminRoute() {
+  const { userInfo } = useSelector((state) => state.auth);
 
-class Admin extends React.Component {
-  render() {
-    this.state = { abc: "" };
-    this.setState({ abc: "hello" });
-    return <h1>Hello</h1>;
-  }
+  return userInfo && userInfo.isAdmin ? (
+    <Outlet />
+  ) : (
+    <Navigate to="/signin" replace />
+  );
 }
+export default AdminRoute;

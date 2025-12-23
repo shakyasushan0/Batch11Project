@@ -29,6 +29,17 @@ const orderApiSlice = apiSlice.injectEndpoints({
       }),
       keepUnsedDataFor: 5,
     }),
+    getOrders: builder.query({
+      query: () => ({
+        url: ORDER_URL,
+      }),
+    }),
+    deliverOrder: builder.mutation({
+      query: (data) => ({
+        url: `${ORDER_URL}/deliver/${data._id}`,
+        method: "PUT",
+      }),
+    }),
   }),
 });
 
@@ -37,4 +48,6 @@ export const {
   useGetOrderDetailsQuery,
   useGetEsewaQuery,
   useGetMyOrdersQuery,
+  useGetOrdersQuery,
+  useDeliverOrderMutation,
 } = orderApiSlice;

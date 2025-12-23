@@ -25,9 +25,27 @@ const getTopProducts = async (req, res) => {
 };
 
 const addProduct = async (req, res) => {
-  const productBody = req.body;
-  const product = await Product.create({ ...productBody, user: req.user._id });
-  res.send({ message: "Product added!", product });
+  // const productBody = req.body;
+  // const product = await Product.create({ ...productBody, user: req.user._id });
+  const product = {
+    name: "Sample Product",
+    price: 0,
+    category: "Sample Category",
+    brand: "Sample Brand",
+    image: "/images/sample.jpg",
+    countInStock: 0,
+    user: req.user._id,
+  };
+  const createdProduct = await Product.create({
+    name: "Sample Product",
+    price: 0,
+    category: "Sample Category",
+    brand: "Sample Brand",
+    image: "/images/sample.jpg",
+    countInStock: 0,
+    user: req.user._id,
+  });
+  res.send({ message: "Product added!", product: createdProduct });
 };
 
 const updateProduct = async (req, res) => {

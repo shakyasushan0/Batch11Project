@@ -19,7 +19,7 @@ router.post(
   "/",
   checkAuth,
   checkAdmin,
-  validationHandler(productAddSchema),
+
   addProduct
 );
 router.get("/top", getTopProducts);
