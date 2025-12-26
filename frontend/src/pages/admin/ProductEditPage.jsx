@@ -1,0 +1,131 @@
+import { useState, useEffect } from "react";
+import {
+  useGetProductByIdQuery,
+  useUpdateProductMutation,
+  useUploadProductImageMutation,
+} from "../../slices/productApiSlice";
+import { Link, useNavigate, useParams } from "react-router";
+import FormContainer from "../../components/FormContainer";
+import { Form, Button } from "react-bootstrap";
+import { toast } from "react-toastify";
+
+function ProductEditPage() {
+  const [name, setName] = useState("");
+  const [category, setCategory] = useState("");
+  const [brand, setBrand] = useState("");
+  const [price, setPrice] = useState(0);
+  const [countInStock, setCountInStock] = useState(0);
+  const [image, setImage] = useState(null);
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const { data: product, isLoading, error } = useGetProductByIdQuery(id);
+  const [updateProduct, {}] = useUpdateProductMutation();
+  const [uploadProductImage, { isLoading: imageLoading }] =
+    useUploadProductImageMutation();
+  const updateProductHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const resp = await updateProduct({
+        name,
+        category,
+        price,
+        brand,
+        countInStock,
+        image,
+        _id: product._id,
+      }).unwrap();
+      toast.success(resp.message);
+      navigate("/admin/products");
+    } catch (err) {
+      toast.error(err?.data?.error || err?.error);
+    }
+  };
+  useEffect(() => {
+    if (product) {
+      setName(product.name);
+      setPrice(product.price);
+      setCategory(product.category);
+      setBrand(product.brand);
+      setCountInStock(product.countInStock);
+      setImage(product.image);
+    }
+  }, [product]);
+
+  const uploadProductImageHandler = async (e) => {
+    const formData = new FormData();
+    formData.append("image", e.target.files[0]);
+    try {
+      const resp = await uploadProductImage(formData).unwrap();
+      setImage(resp.file);
+      toast.success(resp.message);
+    } catch (err) {
+      toast.error(err?.data?.error || err?.error);
+    }
+  };
+  return (
+    <>
+      <Link className="btn btn-light" to="/admin/products">
+        Go Back
+      </Link>
+      <FormContainer>
+        <h2>Edit Product</h2>
+        <Form onSubmit={updateProductHandler}>
+          <Form.Group className="my-2">
+            <Form.Label>Name</Form.Label>
+            <Form.Control
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group className="my-2">
+            <Form.Label>Price</Form.Label>
+            <Form.Control
+              type="number"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group className="my-2">
+            <Form.Label>Image</Form.Label>
+            <Form.Control type="text" value={image} />
+            <Form.Control
+              type="file"
+              label="Choose Image"
+              onChange={uploadProductImageHandler}
+            />
+          </Form.Group>
+          <Form.Group className="my-2">
+            <Form.Label>Brand</Form.Label>
+            <Form.Control
+              type="text"
+              value={brand}
+              onChange={(e) => setBrand(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group className="my-2">
+            <Form.Label>Category</Form.Label>
+            <Form.Control
+              type="caregory"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group className="my-2">
+            <Form.Label>Count In Stock</Form.Label>
+            <Form.Control
+              type="text"
+              value={countInStock}
+              onChange={(e) => setCountInStock(e.target.value)}
+            />
+          </Form.Group>
+          <Button type="submit" variant="dark">
+            Update
+          </Button>
+        </Form>
+      </FormContainer>
+    </>
+  );
+}
+
+export default ProductEditPage;

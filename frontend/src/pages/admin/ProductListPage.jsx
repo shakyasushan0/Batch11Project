@@ -8,6 +8,7 @@ import {
 import Loader from "../../components/Loader";
 import Message from "../../components/Message";
 import { toast } from "react-toastify";
+import { Link } from "react-router";
 
 function ProductListPage() {
   const { data: products, isLoading, error } = useGetProductsQuery();
@@ -39,7 +40,7 @@ function ProductListPage() {
         <Col>
           <h2>Products</h2>
         </Col>
-        <Col className="">
+        <Col className="text-end">
           <Button variant="dark" size="sm" onClick={addProductHandler}>
             <FaEdit /> Create Product
           </Button>
@@ -70,9 +71,12 @@ function ProductListPage() {
                 <td>{product.category}</td>
                 <td>{product.brand}</td>
                 <td>
-                  <Button variant="light" size="sm">
+                  <Link
+                    className="btn btn-light btn-sm"
+                    to={`/admin/product/${product._id}/edit`}
+                  >
                     <FaEdit />
-                  </Button>
+                  </Link>
                   <Button
                     variant="light"
                     size="sm"

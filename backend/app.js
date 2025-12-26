@@ -1,5 +1,6 @@
 import express from "express";
 import cookieParser from "cookie-parser";
+import uploadRouter from "./routers/uploadRouter.js";
 
 import errorHandler from "./middlewares/errorHandler.js";
 import logger from "./middlewares/logger.js";
@@ -21,6 +22,7 @@ app.use(logger);
 app.use("/api/user", userRouter);
 app.use("/api/products", productRouter);
 app.use("/api/orders", orderRouter);
+app.use("/api/upload", uploadRouter);
 
 app.use(errorHandler);
 
